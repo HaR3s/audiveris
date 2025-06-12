@@ -27,7 +27,7 @@ jobs:
           cp audiveris-cli/target/*with-dependencies.jar output/audiveris-cli.jar
 
       - name: Upload Audiveris CLI jar
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: audiveris-cli
           path: output/audiveris-cli.jar
