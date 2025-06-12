@@ -1,17 +1,17 @@
-name: Build Audiveris CLI (Portable JAR, No GUI)
+name: Build Full Audiveris (GUI + CLI)
 
 on:
   workflow_dispatch:
 
 jobs:
-  build-cli:
+  build-full:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout source code
         uses: actions/checkout@v4
 
-      - name: Set up Java 17
+      - name: Set up Java 17 (Temurin)
         uses: actions/setup-java@v4
         with:
           distribution: temurin
@@ -20,14 +20,14 @@ jobs:
       - name: Install Maven
         run: sudo apt-get update && sudo apt-get install -y maven
 
-      - name: Build only CLI module (no GUI)
+      - name: Build full Audiveris project (GUI + CLI)
         run: |
-          mvn -pl audiveris-cli -am clean package -DskipTests
+          mvn clean package -DskipTests
           mkdir -p output
-          cp audiveris-cli/target/*with-dependencies.jar output/audiveris-cli.jar
+          cp audiveris-*/target/*with-dependencies.jar output/ || true
 
-      - name: Upload CLI JAR
+      - name: Upload all built JARs (CLI + GUI)
         uses: actions/upload-artifact@v4
         with:
-          name: audiveris-cli
-          path: output/audiveris-cli.jar
+          name: audiveris-full
+          path: output/
